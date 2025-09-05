@@ -1,0 +1,64 @@
+name: CI - Build & Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build services with Docker Compose
+        run: docker compose -f docker-compose.yml build
+
+  lint-and-test:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/TEST/CI/DUMMY" # fake for CI
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          cd assistant
+          pip install -r requirements.txt
+
+      - name: Run flake8
+        run: |
+          cd assistant
+          flake8 .
+
+      - name: Run pytest
+        run: |
+          cd assistant
+          pytest -v
+
+  notify:
+    runs-on: ubuntu-latest
+    if: failure()   # этот блок сработает, только если CI упал
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":rotating_light: CI pipeline failed on *${{ github.ref }}* in repo *${{ github.repository }}* :rotating_light:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
