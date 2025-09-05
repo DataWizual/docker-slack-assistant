@@ -35,6 +35,9 @@ compose_test/
 │── backend/                 # Python backend (HTTPServer)
 │   └── app.py
 │
+│── nginx_conf/              # Nginx configuration
+│   └── default.conf
+│
 │── docker-compose.yml       # Main compose file
 │── .gitignore
 │── README.md
@@ -88,6 +91,47 @@ curl http://localhost:8083/app/error
 - Implement **log monitoring** in Python.  
 - Integrate with **Slack** for alerts.  
 - Prepare the foundation for next steps: **CI/CD, Kubernetes, Prometheus**.
+
+---
+
+## 📜 Changelog
+
+### Day 1–2
+- Set up Docker basics
+- Ran first containers (`hello-world`, `alpine`)
+
+### Day 3
+- Added Nginx service in Docker
+- Connected Nginx with a Python backend
+
+### Day 4
+- Created log monitoring assistant (Python + Docker SDK)
+- Integrated Slack alerts for container events
+
+### Day 5
+- Added error simulation endpoint in backend (`/error`)
+- Verified Slack integration with HTTP 500 responses
+
+### Day 6
+- Implemented log severity levels (INFO 🔵, WARNING ⚠️, ERROR 🚨)
+- Added `.env` support for Slack webhook
+- Fixed project structure (`backend/`, `nginx_conf/`)
+- Updated `docker-compose.yml` with `depends_on`
+
+---
+
+## 🗺️ Roadmap
+
+| Week | Focus Area                           | Progress ✅ |
+|------|---------------------------------------|-------------|
+| 1    | Linux basics, Docker fundamentals     | ✅ Completed |
+| 2    | Docker deep dive, Nginx + Python app  | ✅ Completed |
+| 3    | Docker Compose, monitoring assistant, Slack integration | ✅ Completed |
+| 4    | Git & GitHub workflow, project structure fixes | ✅ Completed |
+| 5    | CI/CD with GitHub Actions             | 🔄 In progress |
+| 6    | Advanced monitoring (Prometheus, Grafana) | ⏳ Planned |
+| 7    | Kubernetes basics                     | ⏳ Planned |
+| 8    | Deployments on cloud (AWS/GCP/Azure)  | ⏳ Planned |
 
 ---
 
